@@ -22,3 +22,16 @@ db.execute(insert_subject_sql, [1, "Comp Sci"]);
 db.execute(insert_subject_sql, [2, "Math"]);
 db.execute(insert_subject_sql, [3, "English"]);
 db.execute(insert_subject_sql, [4, "History"]);
+
+// Insert assignments into assignments table
+
+const insert_assignment_sql = `
+    insert into assignments
+        (title, priority, subjectId, dueDate, description)
+    values
+        (?, ?, ?, ?, ?);
+`;
+
+db.execute(insert_assignment_sql, ['Textbook Exercises', 8, 2, '2024-01-29', 'Do all odd questions!']);
+
+db.execute(insert_assignment_sql, ['Essay', 10, 4, '2024-01-29', 'Write an essay about the Cruicible.']);
