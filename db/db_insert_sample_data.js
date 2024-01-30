@@ -35,3 +35,5 @@ const insert_assignment_sql = `
 db.execute(insert_assignment_sql, ['Textbook Exercises', 8, 2, '2024-01-29', 'Do all odd questions!']);
 
 db.execute(insert_assignment_sql, ['Essay', 10, 4, '2024-01-29', 'Write an essay about the Cruicible.']);
+
+db.end();

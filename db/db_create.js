@@ -35,4 +35,4 @@ const create_assignments_table_sql = `CREATE TABLE assignments (
 
 db.execute(create_assignments_table_sql);
 
-
+db.end();
