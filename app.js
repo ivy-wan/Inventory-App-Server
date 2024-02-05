@@ -1,6 +1,7 @@
 // Set up the server
 const express = require("express");
 const app = express();
+const db = require("./db/db_connection");
 const port = 3000;
 
 app.use(express.static(__dirname + "/public"));
@@ -10,6 +11,15 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/index.html");
 });
 
+const read_assignments_all_sql = `
+    select assignmentId, title, priority, subjectName,
+    assignments.subjectId as subjectId,
+    DATE_FORMAT(dueDate, "%m/%d/%Y (%W)") AS dueDateFormatted
+    from assignments
+    join subjects 
+    on assignments.subjectId = subjects.subjectId
+    order by assignments.assignmentId DESC
+`;
 app.get("/assignments", (req, res) => {
     res.sendFile(__dirname + "/views/assignments.html");
 });
