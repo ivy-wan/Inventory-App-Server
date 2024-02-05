@@ -21,11 +21,30 @@ const read_assignments_all_sql = `
     order by assignments.assignmentId DESC
 `;
 app.get("/assignments", (req, res) => {
-    res.sendFile(__dirname + "/views/assignments.html");
+    db.execute(read_assignments_all_sql, (error, results) => {
+        if (error) res.status(500).send(error); // 500 - Internal server error
+        else res.send(results);
+    });
 });
 
-app.get("/assignments/details", (req, res) => {
-    res.sendFile(__dirname + "/views/detail.html");
+const read_assignment_details_sql = `
+SELECT
+    assignmentId, title, priority, subjectName,
+    assignments.subjectId as subjectId,
+    DATE_FORMAT(dueDate, "%W, %M %D %Y") AS dueDateExtended, 
+    DATE_FORMAT(dueDate, "%Y-%m-%d") AS dueDateYMD, 
+    description
+FROM assignments
+JOIN subjects
+    ON assignments.subjectId = subjects.subjectId
+WHERE assignmentId = ?
+`
+
+app.get("/assignments/:id", (req, res) => {
+    db.execute(read_assignment_details_sql, [req.params.id], (error, results) => {
+        if(error) res.status(500).send(error);
+        else res.send(results[0]);
+    })
 });
 
 // Start the server
