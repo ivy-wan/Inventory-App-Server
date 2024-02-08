@@ -4,11 +4,15 @@ const app = express();
 const db = require("./db/db_connection");
 const port = 3000;
 
+// Configure express to use ejs
+app.set("views", __dirname + "/views");
+app.set("view engine", "ejs");
+
 app.use(express.static(__dirname + "/public"));
 
 // Define a route for the home page
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/views/index.html");
+    res.render("index");
 });
 
 const read_assignments_all_sql = `
@@ -38,15 +42,21 @@ FROM assignments
 JOIN subjects
     ON assignments.subjectId = subjects.subjectId
 WHERE assignmentId = ?
-`
+`;
 
 app.get("/assignments/:id", (req, res) => {
-    db.execute(read_assignment_details_sql, [req.params.id], (error, results) => {
-        if(error) res.status(500).send(error);
-        else{ 
-            res.send(results[0]);
+    db.execute(
+        read_assignment_details_sql,
+        [req.params.id],
+        (error, results) => {
+            if (error) res.status(500).send(error);
+            else {
+                let data = { hw: results[0] };
+                // console.log(data);
+                res.render("detail", data);
+            }
         }
-    })
+    );
 });
 
 // Start the server

@@ -46,25 +46,24 @@
     <!-- Actual page content! -->
     <div class="container">
         <div class="section flow-text" id="details">
-            <h1>Textbook Assignment</h1>
+            <h1><%= hw.title%></h1>
             <table>
                 <tr>
                     <th>Priority:</th>
-                    <td>2</td>
+                    <td><%= hw.priority%></td>
                 </tr>
                 <tr>
                     <th>Subject:</th>
-                    <td>Math</td>
+                    <td><%=hw.subjectName%></td>
                 </tr>
                 <tr>
                     <th>Due Date:</th>
-                    <td>Friday, May 26th 2023</td>
+                    <td><%= hw.dueDateExtended%></td>
                 </tr>
                 <tr>
                     <th>Detailed Description:</th>
                     <td>
-                        Do odd questions in the range #155 - #207 (chapter 11).
-                        Remember to show your work!
+                        <%= hw.description%>
                     </td>
                 </tr>
             </table>
