@@ -43,7 +43,9 @@ WHERE assignmentId = ?
 app.get("/assignments/:id", (req, res) => {
     db.execute(read_assignment_details_sql, [req.params.id], (error, results) => {
         if(error) res.status(500).send(error);
-        else res.send(results[0]);
+        else{ 
+            res.send(results[0]);
+        }
     })
 });
 
