@@ -10,6 +10,9 @@ app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/public"));
 
+// Configure Express to parse URL encoded POST request bodies
+app.use(express.urlencoded({ extended: false }));
+
 // Define a route for the home page
 app.get("/", (req, res) => {
     res.render("index");
@@ -58,6 +61,40 @@ app.get("/assignments/:id", (req, res) => {
                 let data = { hw: results[0] };
                 // console.log(data);
                 res.render("detail", data);
+            }
+        }
+    );
+});
+
+const delete_assignment_sql = `
+    delete from assignments where assignmentId = ?
+`;
+
+app.get("/assignments/:id/delete", (req, res) => {
+    db.execute(delete_assignment_sql, [req.params.id], (error, results) => {
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            res.redirect("/assignments");
+        }
+    });
+});
+
+const create_assignment_sql = `
+    insert into assignments (title, priority, subjectId, dueDate)
+    values (?, ?, ?, ?);
+`;
+
+app.post("/assignments", (req, res) => {
+    db.execute(
+        create_assignment_sql,
+        [req.body.title, req.body.priority, req.body.subject, req.body.dueDate],
+        (error, results) => {
+            if (error) {
+                res.status(500).send(error);
+            } else {
+                // insertId = assignmentId of the newly created row
+                res.redirect(`/assignments`);
             }
         }
     );
