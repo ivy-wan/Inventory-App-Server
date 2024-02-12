@@ -27,7 +27,11 @@ const read_assignments_all_sql = `
 app.get("/assignments", (req, res) => {
     db.execute(read_assignments_all_sql, (error, results) => {
         if (error) res.status(500).send(error); // 500 - Internal server error
-        else res.send(results);
+        else {
+            let data = { hwlist: results };
+            console.log(data);
+            res.render("assignments", data);
+        }
     });
 });
 
