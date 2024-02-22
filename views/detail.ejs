@@ -91,7 +91,10 @@
                     <i class="material-icons right">edit</i>
                     Edit
                 </a>
-                <a class="btn-large waves-effect waves-light red right">
+                <a
+                    class="btn-large waves-effect waves-light red right"
+                    href="/assignments/<%= hw.assignmentId %>/delete"
+                >
                     <i class="material-icons right">delete</i>
                     Delete
                 </a>
@@ -100,7 +103,11 @@
             <div class="modal" id="edit">
                 <div class="modal-content">
                     <h3>Edit item:</h3>
-                    <form id="updateForm">
+                    <form
+                        id="updateForm"
+                        method="post"
+                        action="/assignments/<%= hw.assignmentId %>"
+                    >
                         <div class="row">
                             <div class="input-field col s8">
                                 <input

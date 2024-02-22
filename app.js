@@ -59,7 +59,7 @@ app.get("/assignments/:id", (req, res) => {
             if (error) res.status(500).send(error);
             else {
                 let data = { hw: results[0] };
-                // console.log(data);
+                console.log(data);
                 res.render("detail", data);
             }
         }
@@ -95,6 +95,33 @@ app.post("/assignments", (req, res) => {
             } else {
                 // insertId = assignmentId of the newly created row
                 res.redirect(`/assignments`);
+            }
+        }
+    );
+});
+
+const update_assignment_sql = `
+    update assignments
+    set title = ?, priority = ?, dueDate = ?, description = ? 
+    where assignmentId = ?
+`;
+
+app.post("/assignments/:id", (req, res) => {
+    db.execute(
+        update_assignment_sql,
+        [
+            req.body.title,
+            req.body.priority,
+            req.body.dueDate,
+            req.body.description,
+            req.params.id,
+        ],
+        (error, results) => {
+            if (error) {
+                res.status(500).send(error);
+            } else {
+                // insertId = assignmentId of the newly created row
+                res.redirect(`/assignments/${req.params.id}`);
             }
         }
     );
